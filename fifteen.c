@@ -36,6 +36,7 @@ void init(void);
 void draw(void);
 bool move(int tile);
 bool won(void);
+bool make_move(int i, int j);
 
 int main(int argc, string argv[])
 {
@@ -158,7 +159,7 @@ void init(void)
 {
     int tile_number = d * d - 1;
     
-    // Заполняем квадратную матрицу номерами
+    // Initializes matrix
     for (int i = 0; i < d; i++)
     {
         for (int j = 0; j < d; j++)
@@ -166,8 +167,7 @@ void init(void)
             board[i][j] = tile_number--;
         }
     }
-    // Если размер квадратной матрицы - чётное число,
-    // то меняем номер 1 и номер 2 местами для возможности выиграша
+    // If size is even number then changes number 1 and number 2 
     if(d % 2 == 0)
     {
         board[d - 1][d - 2] = 2;
@@ -180,12 +180,12 @@ void init(void)
  */
 void draw(void)
 {
-    // Выводим матрицу на экран, вместо номера 0 выводим нижнее подчеркивание
+    // Prints matrix, instead of number 0 prints _
     for (int i = 0; i < d; i++)
     {
         for (int j = 0; j < d; j++)
         {
-            if(board[i][j] == 0)
+            if (board[i][j] == 0)
                 printf("  _");
             else 
                 printf("%3i", board[i][j]);
@@ -201,17 +201,17 @@ void draw(void)
  */
 bool move(int tile)
 {
-    int tile_x, tile_y, tmp;
-    
-    // Ищем координаты числа которое выбрал пользователь
+    // Looks for coordinates of number which was chosen by user
     for (int i = 0; i < d; i++)
     {
         for (int j = 0; j < d; j++)
         {
-            if(board[i][j] == tile)
+            if (board[i][j] == tile)
             {
                 if (make_move(i, j))
-        return true;
+                    return true;
+            }
+        }
     }
     
     return false;
@@ -226,8 +226,8 @@ bool won(void)
     int numbers = 1;
     int increase_order = 1;
     
-    // Проверяем собрана ли выиграшная комбинация, а именно - 
-    // проверяем все ли числа идут по возростанию, кроме последнего
+    // Checks for winning combination 
+    // all numbers must be in increasing order, except the last one which is _
     for (int i = 0; i < d; i++)
     {
        for (int j = 0; j < d; j++)
