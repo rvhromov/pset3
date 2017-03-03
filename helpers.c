@@ -14,30 +14,27 @@
  * Returns true if value is in array of n values, else false.
  * Binary search
  */
-bool search(int value, int values[], int n)
+bool search(int value, int values[], int low, int n)
 {
-    if(n < 0)
+    if (n < 0)
         return false;
     
-    int middle = 0;
-    int left_side = 0;
-    int right_side = n;
+    // Find the middle of array   
+    int middle = (low + n) / 2;
     
-    while (left_side <= right_side)
-    {
-        // Находим половину
-        middle = (left_side + right_side) / 2;
-        // Если искомый элемент меньше половины, то ищем в левой части
-        if (value < values[middle])
-            right_side = middle - 1;
-        // Если искомый элемент больше половины, то ищем в правой части
-        else if (value > values[middle])
-            left_side = middle + 1;
-        // Искомый элемент равняется половине
-        else 
-            return true;
-    }
+    // If the value is less than the value of the middle of the array
+    if (values[middle] < value)
+        return search(value, values, low + 1, n);
+        
+    // If the value is greater than the value of the middle of the array
+    else if (values[middle] > value)
+        return search(value, values, low, n - 1);
+        
+    // Desired value is found
+    else
+        return true;
     
+    // Desired value isn't found
     return false;
 }
 
@@ -48,13 +45,13 @@ bool search(int value, int values[], int n)
 void sort(int values[], int n)
 {
     int tmp_array[MAX] = {0};
-    // Считаем сколько раз встречается каждое число
+    // Counting how many times each number appears
     for (int i = 0; i < n; i++)
          tmp_array[values[i]]++;
-    // Подсчитываем количество элементов
+    // Counting amount of elements
     for (int j = 1; j <= MAX; j++)
          tmp_array[j] += tmp_array[j - 1];
-    // Переписываем по порядку
+    // Rewriting in order
     for (int i = 0; i < n; i++) 
       values[--tmp_array[values[i]]] = values[i];
 }
