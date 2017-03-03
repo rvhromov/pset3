@@ -210,46 +210,7 @@ bool move(int tile)
         {
             if(board[i][j] == tile)
             {
-                tile_x = i;
-                tile_y = j;
-            }
-        }
-    }
-    
-    // Проверяем, есть ли от этого числа свободное место слева, если да - меняем местами
-    if(board[tile_x][tile_y - 1] == 0 && tile_y - 1 >= 0)
-    {
-        tmp = board[tile_x][tile_y];
-        board[tile_x][tile_y] = board[tile_x][tile_y - 1];
-        board[tile_x][tile_y - 1] = tmp;
-        
-        return true;
-    }
-    // Проверяем, есть ли от этого числа свободное место справа, если да - меняем местами
-    if(board[tile_x][tile_y + 1] == 0 && tile_y + 1 < d )
-    {
-        tmp = board[tile_x][tile_y];
-        board[tile_x][tile_y] = board[tile_x][tile_y + 1];
-        board[tile_x][tile_y + 1] = tmp;
-        
-        return true;
-    }
-    // Проверяем, есть ли от этого числа свободное место сверху, если да - меняем местами
-    if(board[tile_x - 1][tile_y] == 0 && tile_x - 1 >= 0)
-    {
-        tmp = board[tile_x][tile_y];
-        board[tile_x][tile_y] = board[tile_x - 1][tile_y];
-        board[tile_x - 1][tile_y] = tmp;
-        
-        return true;
-    }
-    // Проверяем, есть ли от этого числа свободное место снизу, если да - меняем местами
-    if(board[tile_x + 1][tile_y] == 0 && tile_x + 1 < d )
-    {
-        tmp = board[tile_x][tile_y];
-        board[tile_x][tile_y] = board[tile_x + 1][tile_y];
-        board[tile_x + 1][tile_y] = tmp;
-        
+                if (make_move(i, j))
         return true;
     }
     
@@ -283,5 +244,43 @@ bool won(void)
         } 
     }
         
+    return false;
+}
+
+bool make_move(int i, int j)
+{
+    // Checks for space below and changes _ and number
+    if ((i + 1 < d) && (board[i + 1][j] == 0))
+	{
+		board[i + 1][j] = board[i][j];
+		board[i][j] = 0;
+		
+		return true;
+	}
+	// Checks for space above and changes _ and number
+	else if ((i - 1 >= 0) && (board[i - 1][j] == 0))
+	{
+		board[i - 1][j] = board[i][j];
+		board[i][j] = 0;
+		
+	    return true;
+	}
+	// Checks for space on the right and changes _ and number
+	else if ((j + 1 < d) && (board[i][j + 1] == 0))
+	{
+		board[i][j + 1] = board[i][j];
+		board[i][j] = 0;
+		
+		return true;
+	}
+	// Checks for space on the left and changes _ and number
+	else if ((j - 1 >= 0) && (board[i][j - 1] == 0))
+	{
+		board[i][j - 1] = board[i][j];
+		board[i][j] = 0;
+		
+		return true;
+    }
+    
     return false;
 }
